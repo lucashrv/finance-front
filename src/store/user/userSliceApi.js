@@ -6,11 +6,6 @@ export const userApi = createApi({
     baseQuery,
     tagTypes: ['Users'],
     endpoints: (builder) => ({
-        // getOne: builder.query({
-        //     query: ({ id }) =>
-        //         `/user/${id}`,
-        //     providesTags: ['Users']
-        // }),
         login: builder.mutation({
             query: (body) => ({
                 url: '/user/login',
@@ -25,22 +20,7 @@ export const userApi = createApi({
                 method: 'POST'
             }),
             invalidatesTags: ['Users']
-        }),
-        // updateUser: builder.mutation({
-        //     query: ({ id, body }) => ({
-        //         url: `/user/${id}`,
-        //         body,
-        //         method: 'PUT'
-        //     }),
-        //     invalidatesTags: ['Users']
-        // }),
-        // deleteUser: builder.mutation({
-        //     query: (id) => ({
-        //         url: `/user/${id}`,
-        //         method: 'DELETE'
-        //     }),
-        //     invalidatesTags: ['Users']
-        // }),
+        })
     })
 })
 

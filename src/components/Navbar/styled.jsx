@@ -24,6 +24,12 @@ export const Logo = styled.h1`
     font-size: 3rem;
 `
 
+export const MenuContainer = styled.nav`
+    @media (max-width: 1000px) {
+        display: none;
+    }
+`
+
 export const Menu = styled.ul`
     display: flex;
     align-items: center;
@@ -53,6 +59,13 @@ export const UserContainer = styled.div`
     gap: 1.5rem;
 `
 
-export const AvatarContainer = styled.div`
+export const AvatarContainer = styled.nav``
 
+export const MenuMobileContainer = styled.div``
+
+export const LogoutContainer = styled.div`
+    @media (max-width: 1000px) {
+        display: none;
+    }
 `
+

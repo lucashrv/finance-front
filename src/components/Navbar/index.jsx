@@ -6,7 +6,10 @@ import {
     Menu,
     MenuItem,
     UserContainer,
-    AvatarContainer
+    AvatarContainer,
+    MenuContainer,
+    MenuMobileContainer,
+    LogoutContainer
 } from './styled'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -19,6 +22,7 @@ import { Menu as JoyMenu } from '@mui/joy';
 import MenuButton from '@mui/joy/MenuButton';
 import { MenuItem as JoyMenuItem } from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
+import DrawerMenu from '../DrawerMenu';
 
 
 export default function Navbar() {
@@ -28,6 +32,8 @@ export default function Navbar() {
     const navigate = useNavigate()
 
     const location = useLocation();
+
+    const pathname = location.pathname
 
     const userName = JSON.parse(localStorage.getItem('user')).name
 
@@ -43,14 +49,12 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        const pathname = location.pathname
-
         MenuLinks.map(item => {
             if (pathname === item.link) {
                 handleSetActiveLink(item.id)
             }
         })
-    }, [])
+    }, [pathname])
 
     const MenuLinks = [
         {
@@ -65,8 +69,8 @@ export default function Navbar() {
         },
         {
             id: 2,
-            label: 'Contas',
-            link: '/overview',
+            label: 'Categorias',
+            link: '/categories',
         },
         {
             id: 3,
@@ -78,7 +82,7 @@ export default function Navbar() {
     return (<>
         <NavbarContainer>
 
-            <LogoContainer onClick={() => navigate('/')}>
+            <LogoContainer onClick={() => navigate('/overview')}>
                 <AttachMoneyIcon
                     sx={{
                         fontSize: '3.7rem',
@@ -89,17 +93,19 @@ export default function Navbar() {
                 <Logo>finance</Logo>
             </LogoContainer>
 
-            <Menu>
-                {MenuLinks.map((item, i) => (
-                    <MenuItem
-                        key={i}
-                        $active={activeLink === i ? 'true' : ''}
-                        onClick={() => handleSetActiveLink(i)}
-                    >
-                        <Link to={item.link}>{item.label}</Link>
-                    </MenuItem>
-                ))}
-            </Menu>
+            <MenuContainer>
+                <Menu>
+                    {MenuLinks.map((item, i) => (
+                        <MenuItem
+                            key={i}
+                            $active={activeLink === i ? 'true' : ''}
+                            onClick={() => handleSetActiveLink(i)}
+                        >
+                            <Link to={item.link}>{item.label}</Link>
+                        </MenuItem>
+                    ))}
+                </Menu>
+            </MenuContainer>
 
             <UserContainer>
 
@@ -135,14 +141,23 @@ export default function Navbar() {
                     </Dropdown>
                 </AvatarContainer>
 
-                <LogoutIcon
-                    sx={{
-                        fontSize: '2.5rem',
-                        color: '#155eef',
-                        cursor: 'pointer',
-                    }}
-                    onClick={handleLogout}
-                />
+                <LogoutContainer>
+                    <LogoutIcon
+                        sx={{
+                            fontSize: '2.5rem',
+                            color: '#155eef',
+                            cursor: 'pointer',
+                        }}
+                        onClick={handleLogout}
+                    />
+                </LogoutContainer>
+
+                <MenuMobileContainer>
+
+                    <DrawerMenu />
+
+                </MenuMobileContainer>
+
             </UserContainer>
 
         </NavbarContainer>
