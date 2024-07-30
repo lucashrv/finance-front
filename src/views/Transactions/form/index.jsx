@@ -5,7 +5,7 @@ import {
     Grid,
     Paper
 } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../../components/Button';
@@ -14,6 +14,9 @@ import Title from '../../../components/Title';
 import Select from '../../../components/Select';
 import { useSnackbars } from '../../../hooks/useSnackbars';
 import Separator from '../../../components/Separator/index';
+import { useGetAllQuery } from '../../../store/category/categorySliceApi'
+import createSchema from './../../../schemas/transaction/createSchema';
+import { useCreateMutation } from '../../../store/transaction/transactionSliceApi';
 
 export default function TransactionsForm() {
 
@@ -25,22 +28,28 @@ export default function TransactionsForm() {
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const defaultValues = {
-        transaction: 0,
-    }
+    const { data: getAllCategory, isLoading: categoryLoading } = useGetAllQuery()
+
+    const [
+        create,
+        { isLoading: loadingCreate }
+    ] = useCreateMutation()
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors }
     } = useForm({
         // resolver: zodResolver(id ? updateSchema : createSchema),
-        defaultValues,
+        resolver: zodResolver(createSchema),
         // values: userEdit,
         resetOptions: {
             keepDirtyValues: true
         }
     })
+
+    !categoryLoading && setValue('category_id', getAllCategory[0].id)
 
     const onSave = async (data) => {
         console.log(data);
@@ -50,16 +59,17 @@ export default function TransactionsForm() {
             //         ? await updateUser({ id: params.id, body: data }).unwrap()
             //         : await signUp(data).unwrap()
 
-            // successSnackbar(save.message)
+            const save = await create(data)
+
+            successSnackbar(save.data.message)
         } catch (error) {
-            errorSnackbar(error.data.error)
+            // errorSnackbar(error.data.error)
         }
     }
 
-    const selectOptions = [
-        { label: 'Usuário', value: 'user' },
-        { label: 'Administrador', value: 'admin' },
-    ]
+    const selectOptions = !!getAllCategory ? getAllCategory.map(item => {
+        return { label: item.name, value: item.id }
+    }) : []
 
     return (
         <Grid container spacing={1}>
@@ -80,26 +90,31 @@ export default function TransactionsForm() {
                 <Container component="main" >
                     <Box component="form" noValidate onSubmit={handleSubmit(onSave)}>
                         <Input
-                            label='Transação'
-                            register={register('transaction')}
-                            focus={!id}
-                            errors={errors.transaction}
-                        />
-                        <Separator />
-                        <Input
-                            label='Saldo'
-                            register={register('balance', {
-                                setValueAs: v => parseFloat(v),
-                            })}
-                            errors={errors.balance}
+                            label='Item da transação'
+                            register={register('description')}
+                            errors={errors.description}
                         />
                         <Separator />
                         <Select
-                            label="Permissões"
-                            register={register('role')}
+                            label="Categoria"
+                            register={register('category_id', {
+                                setValueAs: v => Number(v),
+                            })}
                             options={selectOptions}
-                            errors={errors.role}
+                            errors={errors.category_id}
                         />
+                        <Separator />
+                        <Input
+                            label='Valor da transação'
+                            placeholder='Rendimento + / Despesa -'
+                            type='number'
+                            value={e => console.log(e.target.value)}
+                            register={register('transaction', {
+                                setValueAs: v => parseFloat(v),
+                            })}
+                            errors={errors.transaction}
+                        />
+                        <Separator />
                         <Grid
                             container
                             style={{
@@ -115,7 +130,7 @@ export default function TransactionsForm() {
                                 padding='3px'
                                 fontSize='11px'
                                 type='button'
-                                loading={false}
+                                loading={loadingCreate}
                                 onClick={() => navigate(-1)}
                             />
                             <Button
@@ -123,7 +138,7 @@ export default function TransactionsForm() {
                                 padding='3px'
                                 fontSize='11px'
                                 color='success'
-                                loading={false}
+                                loading={loadingCreate}
                             />
                         </Grid>
                     </Box>

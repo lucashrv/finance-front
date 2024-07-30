@@ -10,7 +10,8 @@ export default function Input(props) {
         defaultValue,
         errors,
         type = 'text',
-        focus = false
+        focus = false,
+        placeholder
     } = props
 
     return (<>
@@ -24,6 +25,7 @@ export default function Input(props) {
             {...register}
             defaultValue={defaultValue}
             type={type}
+            placeholder={placeholder}
         />
         {
             errors &&

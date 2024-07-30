@@ -50,6 +50,7 @@ export default function DrawerMenu() {
                     }}
                     style={{
                         margin: '3rem auto',
+                        paddingRight: '1rem'
                     }}
                 >
                     <AttachMoneyIcon
@@ -63,7 +64,7 @@ export default function DrawerMenu() {
                 </LogoContainer>
 
                 <List
-                    sx={{ fontSize: '2.2rem', textAlign: 'center' }}
+                    sx={{ fontSize: '2.4rem', gap: 1 }}
                 >
                     <ListItem>
                         <ListItemButton
@@ -72,7 +73,7 @@ export default function DrawerMenu() {
                                 toggleDrawer()
                             }}
                         >
-                            Visão geral
+                            <p style={{ width: '100%', textAlign: 'center' }}>Visão geral</p>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
@@ -82,7 +83,7 @@ export default function DrawerMenu() {
                                 toggleDrawer()
                             }}
                         >
-                            Transações
+                            <p style={{ width: '100%', textAlign: 'center' }}>Transações</p>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
@@ -92,7 +93,7 @@ export default function DrawerMenu() {
                                 toggleDrawer()
                             }}
                         >
-                            Categorias
+                            <p style={{ width: '100%', textAlign: 'center' }}>Categorias</p>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
@@ -102,7 +103,7 @@ export default function DrawerMenu() {
                                 toggleDrawer()
                             }}
                         >
-                            Carteira
+                            <p style={{ width: '100%', textAlign: 'center' }}>Carteira</p>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
@@ -110,7 +111,7 @@ export default function DrawerMenu() {
                             onClick={handleLogout}
                             style={{ color: '#155eef' }}
                         >
-                            Sair
+                            <p style={{ width: '100%', textAlign: 'center' }}>Sair</p>
                         </ListItemButton>
                     </ListItem>
                 </List>

@@ -6,6 +6,10 @@ export const categoryApi = createApi({
     baseQuery,
     tagTypes: ['Categories'],
     endpoints: (builder) => ({
+        getAll: builder.query({
+            query: () => `/categories`,
+            providesTags: ['Categories']
+        }),
         getOne: builder.query({
             query: ({ id }) =>
                 `/category/${id}`,
@@ -33,5 +37,6 @@ export const categoryApi = createApi({
 export const {
     useCreateMutation,
     useUpdateMutation,
-    useGetOneQuery
+    useGetOneQuery,
+    useGetAllQuery
 } = categoryApi
