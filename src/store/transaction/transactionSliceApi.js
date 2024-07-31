@@ -6,10 +6,10 @@ export const transactionApi = createApi({
     baseQuery,
     tagTypes: ['Transactions'],
     endpoints: (builder) => ({
-        // getAll: builder.query({
-        //     query: () => `/categories`,
-        //     providesTags: ['Categories']
-        // }),
+        getAll: builder.query({
+            query: () => `/transactions`,
+            providesTags: ['Transactions']
+        }),
         // getOne: builder.query({
         //     query: ({ id }) =>
         //         `/category/${id}`,
@@ -38,5 +38,5 @@ export const {
     useCreateMutation,
     // useUpdateMutation,
     // useGetOneQuery,
-    // useGetAllQuery
+    useGetAllQuery
 } = transactionApi

@@ -9,10 +9,43 @@ import WalletBalance from "../../components/WalletBalance"
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
+import Table from '../../components/Table';
+import { useGetAllQuery } from '../../store/transaction/transactionSliceApi';
 
 export default function Overview() {
 
     const userName = JSON.parse(localStorage.getItem('user')).name
+
+    const tableHeader = [
+        'Item',
+        'Categoria',
+        'Data',
+        'Valor',
+    ]
+
+    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllQuery()
+
+    const userTransactionsFormated = !!userTransactions ?
+        userTransactions.map(item => {
+
+            const options = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
+
+            const date = new Date(item.created_at).toLocaleDateString('pt-br')
+
+            return {
+                ...item,
+                transaction: item.transaction.toLocaleString('pt-BR', options),
+                category_name: item['category.name'],
+                date
+            }
+        }) : []
+
+    const rowContent = [
+        'description',
+        'category_name',
+        'date',
+        'transaction'
+    ]
 
     return (
         <Container>
@@ -81,6 +114,15 @@ export default function Overview() {
                     value="R$ 55.852,65"
                 />
             </WalletContainer>
+
+            <Table
+                title={'Últimas transações'}
+                subtitle={'Veja suas últimas transações realizadas'}
+                headers={tableHeader}
+                list={userTransactionsFormated}
+                rowContent={rowContent}
+                loading={transactionsLoading}
+            />
 
         </Container>
     )
