@@ -38,3 +38,7 @@ export const WalletContainer = styled.section`
         gap: 3rem;
     }
 `
+
+export const TableContainer = styled.section`
+    margin: 4rem 0;
+`

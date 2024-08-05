@@ -16,9 +16,13 @@ export const Title = styled.h4`
 `
 
 export const Value = styled.div`
-    color: ${props => props.$isBalance ? '#155eef' : ''};
+    color: ${props => props.$color};
     padding-left: 2rem;
     font-size: 4rem;
     font-weight: 600;
     margin-bottom: 2rem;
+`
+
+export const ProgressContainer = styled.div`
+    padding: 1rem 0 1rem 2rem;
 `

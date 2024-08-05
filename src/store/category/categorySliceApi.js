@@ -1,42 +1,27 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from '../utils/apiBaseQuery';
-
-export const categoryApi = createApi({
-    reducerPath: 'categoryApi',
-    baseQuery,
-    tagTypes: ['Categories'],
-    endpoints: (builder) => ({
-        getAll: builder.query({
-            query: () => `/categories`,
-            providesTags: ['Categories']
+export const categoryApi = (builder) => ({
+    getAllCategories: builder.query({
+        query: () => `/categories`,
+        providesTags: ['Categories']
+    }),
+    getOneCategory: builder.query({
+        query: ({ id }) =>
+            `/category/${id}`,
+        providesTags: ['Categories']
+    }),
+    createCategory: builder.mutation({
+        query: (body) => ({
+            url: '/category',
+            body,
+            method: 'POST'
         }),
-        getOne: builder.query({
-            query: ({ id }) =>
-                `/category/${id}`,
-            providesTags: ['Categories']
+        invalidatesTags: ['Categories']
+    }),
+    updateCategory: builder.mutation({
+        query: ({ id, body }) => ({
+            url: `/category/${id}`,
+            body,
+            method: 'PUT'
         }),
-        create: builder.mutation({
-            query: (body) => ({
-                url: '/category',
-                body,
-                method: 'POST'
-            }),
-            invalidatesTags: ['Categories']
-        }),
-        update: builder.mutation({
-            query: ({ id, body }) => ({
-                url: `/category/${id}`,
-                body,
-                method: 'PUT'
-            }),
-            invalidatesTags: ['Categories']
-        }),
-    })
+        invalidatesTags: ['Categories']
+    }),
 })
-
-export const {
-    useCreateMutation,
-    useUpdateMutation,
-    useGetOneQuery,
-    useGetAllQuery
-} = categoryApi

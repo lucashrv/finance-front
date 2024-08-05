@@ -12,15 +12,17 @@ import Button from '../../../components/Button';
 import Input from '../../../components/Input';
 import Title from '../../../components/Title';
 import { useSnackbars } from '../../../hooks/useSnackbars';
-import {
-    useCreateMutation,
-    useUpdateMutation,
-    useGetOneQuery
-} from '../../../store/category/categorySliceApi';
+import { api } from '../../../store';
 import createSchema from '../../../schemas/category/createSchema'
 import updateSchema from '../../../schemas/category/updateSchema'
 
 export default function CategoriesForm() {
+
+    const {
+        useCreateCategoryMutation,
+        useUpdateCategoryMutation,
+        useGetOneCategoryQuery,
+    } = api
 
     const params = useParams()
 
@@ -30,17 +32,17 @@ export default function CategoriesForm() {
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: categoryEdit } = useGetOneQuery({ id: params.id }, { skip: !id })
+    const { data: categoryEdit } = useGetOneCategoryQuery({ id: params.id }, { skip: !id })
 
     const [
         create,
         { isLoading: loadingCreate }
-    ] = useCreateMutation()
+    ] = useCreateCategoryMutation()
 
     const [
         update,
         { isLoading: loadingUpdate }
-    ] = useUpdateMutation()
+    ] = useUpdateCategoryMutation()
 
     const {
         register,

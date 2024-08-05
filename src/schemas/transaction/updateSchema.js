@@ -1,7 +1,7 @@
 import { z } from "zod";
 import messages from "../messages";
 
-const createSchema = z.object({
+const updateSchema = z.object({
     description: z.string()
         .min(2, messages(2).minSize)
         .max(20, messages(20).maxSize),
@@ -11,10 +11,10 @@ const createSchema = z.object({
     category_id: z.number()
 })
 
-createSchema.required({
+updateSchema.required({
     transaction: true,
     description: true,
     category_id: true
 })
 
-export default createSchema
+export default updateSchema

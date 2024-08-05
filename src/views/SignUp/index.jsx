@@ -15,11 +15,15 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import { useSnackbars } from '../../hooks/useSnackbars';
 import signUpSchema from '../../schemas/user/signUpSchema';
-import { useSignUpMutation } from '../../store/user/userSliceApi';
+import { api } from "../../store";
 
 const defaultTheme = createTheme();
 
 export default function SignUpIndex() {
+
+    const {
+        useSignUpMutation
+    } = api
 
     const navigate = useNavigate()
 

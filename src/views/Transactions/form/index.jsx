@@ -14,11 +14,18 @@ import Title from '../../../components/Title';
 import Select from '../../../components/Select';
 import { useSnackbars } from '../../../hooks/useSnackbars';
 import Separator from '../../../components/Separator/index';
-import { useGetAllQuery } from '../../../store/category/categorySliceApi'
 import createSchema from './../../../schemas/transaction/createSchema';
-import { useCreateMutation } from '../../../store/transaction/transactionSliceApi';
+import updateSchema from './../../../schemas/transaction/updateSchema';
+import { api } from '../../../store';
 
 export default function TransactionsForm() {
+
+    const {
+        useCreateTransactionMutation,
+        useGetOneTransactionQuery,
+        useGetAllCategoriesQuery,
+        useUpdateUserMutation
+    } = api
 
     const params = useParams()
 
@@ -28,42 +35,46 @@ export default function TransactionsForm() {
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: getAllCategory, isLoading: categoryLoading } = useGetAllQuery()
+    const { data: getAllCategory, isLoading: categoryLoading } = useGetAllCategoriesQuery()
+
+    const { data: transactionData } = useGetOneTransactionQuery({ id: params.id }, { skip: !id })
 
     const [
         create,
         { isLoading: loadingCreate }
-    ] = useCreateMutation()
+    ] = useCreateTransactionMutation()
+
+    const [
+        update,
+        { isLoading: loadingUpdate }
+    ] = useUpdateUserMutation()
 
     const {
         register,
         handleSubmit,
         setValue,
+        reset,
         formState: { errors }
     } = useForm({
-        // resolver: zodResolver(id ? updateSchema : createSchema),
-        resolver: zodResolver(createSchema),
-        // values: userEdit,
+        resolver: zodResolver(id ? updateSchema : createSchema),
+        values: transactionData,
         resetOptions: {
             keepDirtyValues: true
         }
     })
 
-    !categoryLoading && setValue('category_id', getAllCategory[0].id)
+    !categoryLoading && !id && setValue('category_id', getAllCategory[0].id)
 
     const onSave = async (data) => {
-        console.log(data);
         try {
-            // const save =
-            //     id
-            //         ? await updateUser({ id: params.id, body: data }).unwrap()
-            //         : await signUp(data).unwrap()
+            const save =
+                id
+                    ? await update({ id: params.id, body: data }).unwrap()
+                    : await create(data).unwrap(); reset();
 
-            const save = await create(data)
-
-            successSnackbar(save.data.message)
+            successSnackbar(save.message)
         } catch (error) {
-            // errorSnackbar(error.data.error)
+            errorSnackbar(error.data.error)
         }
     }
 
@@ -108,7 +119,6 @@ export default function TransactionsForm() {
                             label='Valor da transação'
                             placeholder='Rendimento + / Despesa -'
                             type='number'
-                            value={e => console.log(e.target.value)}
                             register={register('transaction', {
                                 setValueAs: v => parseFloat(v),
                             })}
@@ -130,7 +140,7 @@ export default function TransactionsForm() {
                                 padding='3px'
                                 fontSize='11px'
                                 type='button'
-                                loading={loadingCreate}
+                                loading={loadingCreate || loadingUpdate}
                                 onClick={() => navigate(-1)}
                             />
                             <Button
@@ -138,7 +148,7 @@ export default function TransactionsForm() {
                                 padding='3px'
                                 fontSize='11px'
                                 color='success'
-                                loading={loadingCreate}
+                                loading={loadingCreate || loadingUpdate}
                             />
                         </Grid>
                     </Box>

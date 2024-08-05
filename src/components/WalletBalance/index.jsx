@@ -1,15 +1,18 @@
 import {
     Container,
     Title,
-    Value
+    Value,
+    ProgressContainer,
 } from './styled'
+import { CircularProgress } from '@mui/joy'
 
 export default function WalletBalance(props) {
 
     const {
         title,
         value,
-        isBalance
+        color = "#000",
+        loading = true
     } = props
 
     return (
@@ -17,7 +20,15 @@ export default function WalletBalance(props) {
 
             <Title>{title}</Title>
 
-            <Value $isBalance={isBalance}>{value}</Value>
+            {!loading && (
+                <Value $color={color}>{value}</Value>
+            )}
+
+            {loading && (
+                <ProgressContainer>
+                    <CircularProgress size='md' variant="soft" />
+                </ProgressContainer>
+            )}
 
         </Container>
     )

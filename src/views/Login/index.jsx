@@ -13,13 +13,17 @@ import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import loginSchema from '../../schemas/user/loginSchema';
-import { useLoginMutation } from '../../store/user/userSliceApi';
+import { api } from "../../store";
 import Input from './../../components/Input';
 import { useSnackbars } from './../../hooks/useSnackbars';
 
 const defaultTheme = createTheme();
 
 export default function LoginIndex() {
+
+    const {
+        useLoginMutation
+    } = api
 
     const navigate = useNavigate()
 
