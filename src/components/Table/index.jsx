@@ -9,7 +9,8 @@ import {
     Title,
     SubTitle,
     LoadingContainer,
-    TdActions
+    TdActions,
+    PopoverButtonsContainer
 } from './styled'
 import { CircularProgress } from '@mui/joy'
 import Box from '@mui/joy/Box';
@@ -18,6 +19,10 @@ import Button from '@mui/joy/Button';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useNavigate } from 'react-router-dom';
+import {
+    Popper
+} from '@mui/material';
+import { useState } from 'react';
 
 export default function Table(props) {
     const {
@@ -28,10 +33,21 @@ export default function Table(props) {
         rowContent = [],
         loading = true,
         editRoute,
-        onDelete
+        onDelete,
+        loadingDelete = true
     } = props
 
     const navigate = useNavigate()
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [idDelete, setIdDelete] = useState(null);
+
+    const open = Boolean(anchorEl);
+    const idOpen = open ? 'simple-popper' : undefined;
+
+    const toggleDelete = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget)
+    }
 
     return (
         <Container>
@@ -107,7 +123,7 @@ export default function Table(props) {
                                         </Tooltip>
 
                                         <Tooltip title="Deletar" variant="plain">
-                                            <Button variant="plain" size='small'>
+                                            <Button variant="plain" size='small' aria-describedby={idOpen}>
                                                 <DeleteOutlineOutlinedIcon
                                                     fontSize='large'
                                                     sx={{
@@ -116,7 +132,10 @@ export default function Table(props) {
                                                         color: '#f11717',
                                                         cursor: 'pointer'
                                                     }}
-                                                    onClick={() => console.log('delete')}
+                                                    onClick={(e) => {
+                                                        toggleDelete(e)
+                                                        setIdDelete(item.id)
+                                                    }}
                                                 />
                                             </Button>
                                         </Tooltip>
@@ -127,6 +146,34 @@ export default function Table(props) {
                     </tbody>
                 </>)}
             </TableContainer>
+            <Popper id={idOpen} open={open} anchorEl={anchorEl}>
+                <Box sx={{
+                    border: 1,
+                    p: 2,
+                    bgcolor: '#f5f5f5',
+                    borderRadius: '5px'
+                }}
+                >
+                    <h6>Deseja deletar?</h6>
+                    <PopoverButtonsContainer>
+                        <button onClick={toggleDelete}>Cancelar</button>
+                        {loadingDelete
+                            ? <CircularProgress size='sm' />
+                            : (
+                                <button
+                                    onClick={async () => {
+                                        await onDelete(idDelete)
+                                        toggleDelete()
+                                    }}
+                                >
+                                    Deletar
+                                </button>
+                            )
+                        }
+
+                    </PopoverButtonsContainer>
+                </Box>
+            </Popper>
         </Container>
     )
 }

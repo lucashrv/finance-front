@@ -1,7 +1,15 @@
 export const categoryApi = (builder) => ({
     getAllCategories: builder.query({
         query: () => `/categories`,
-        providesTags: ['Categories']
+        providesTags: ['Categories'],
+        transformResponse: (response, meta, arg) => {
+            const res = response.map(item => ({
+                ...item,
+                created_at: new Date(item.created_at).toLocaleDateString('pt-br')
+            }))
+
+            return res
+        },
     }),
     getOneCategory: builder.query({
         query: ({ id }) =>
@@ -24,4 +32,11 @@ export const categoryApi = (builder) => ({
         }),
         invalidatesTags: ['Categories']
     }),
+    deleteCategory: builder.mutation({
+        query: (id) => ({
+            url: `/category/${id}`,
+            method: 'DELETE'
+        }),
+        invalidatesTags: ['Categories'],
+    })
 })

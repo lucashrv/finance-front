@@ -54,6 +54,7 @@ export const Td = styled.td`
     border-bottom: 1px solid #85858560;
     text-align: left;
     color: ${(props) => props.$color};
+    white-space: nowrap;
 
     &:first-child {
         color: #000;
@@ -71,4 +72,36 @@ export const TdActions = styled.td`
 export const LoadingContainer = styled.div`
     display: flex;
     justify-content: center;
+`
+
+export const PopoverButtonsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+
+    &>button {
+        cursor: pointer;
+        font-size: 10px;
+        border: 1px solid;
+        border-radius: 3px;
+        padding: 3px;
+        color: #fff;
+    }
+
+    &>button:first-of-type {
+        background-color: #5cc224;
+    }
+
+    &>button:last-child {
+        background-color: #e92323;
+    }
+
+    &>button:first-of-type:hover {
+        background-color: #5ccf1e;
+    }
+
+    &>button:last-child:hover {
+        background-color: #ff6b6b;
+    }
 `

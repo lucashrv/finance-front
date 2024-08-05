@@ -47,6 +47,7 @@ export default function CategoriesForm() {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors }
     } = useForm({
         resolver: zodResolver(id ? updateSchema : createSchema),
@@ -61,7 +62,7 @@ export default function CategoriesForm() {
             const save =
                 id
                     ? await update({ id: params.id, body: data }).unwrap()
-                    : await create(data).unwrap()
+                    : await create(data).unwrap(); reset();
 
             successSnackbar(save.message)
         } catch (error) {

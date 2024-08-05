@@ -14,6 +14,7 @@ import LoginIndex from '../views/Login'
 import Overview from '../views/Overview'
 import Transactions from '../views/Transactions'
 import TransactionsForm from '../views/Transactions/form'
+import Categories from '../views/Categories'
 import CategoriesForm from '../views/Categories/form'
 
 
@@ -89,6 +90,10 @@ function IndexRoutes() {
                 <Route
                     path="/transactions/edit/:id"
                     element={<PrivateRoute element={TransactionsForm} />}
+                />
+                <Route
+                    path="/categories"
+                    element={<PrivateRoute element={Categories} />}
                 />
                 <Route
                     path="/categories/form"
