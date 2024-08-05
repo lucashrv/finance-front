@@ -16,13 +16,20 @@ export const transactionApi = (builder) => ({
             body,
             method: 'POST'
         }),
-        invalidatesTags: ['Transactions']
+        invalidatesTags: ['Transactions', 'Users']
     }),
     updateTransaction: builder.mutation({
         query: ({ id, body }) => ({
             url: `/transaction/${id}`,
             body,
             method: 'PUT'
+        }),
+        invalidatesTags: ['Transactions', 'Users']
+    }),
+    deleteTransaction: builder.mutation({
+        query: (id) => ({
+            url: `/transaction/${id}`,
+            method: 'DELETE'
         }),
         invalidatesTags: ['Transactions', 'Users']
     }),

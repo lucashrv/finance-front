@@ -15,8 +15,8 @@ export const api = createApi({
         'Transactions',
     ],
     endpoints: (builder) => ({
+        ...userApi(builder),
         ...categoryApi(builder),
         ...transactionApi(builder),
-        ...userApi(builder),
     })
 })

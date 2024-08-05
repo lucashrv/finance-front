@@ -24,7 +24,7 @@ export default function TransactionsForm() {
         useCreateTransactionMutation,
         useGetOneTransactionQuery,
         useGetAllCategoriesQuery,
-        useUpdateUserMutation
+        useUpdateTransactionMutation
     } = api
 
     const params = useParams()
@@ -47,7 +47,7 @@ export default function TransactionsForm() {
     const [
         update,
         { isLoading: loadingUpdate }
-    ] = useUpdateUserMutation()
+    ] = useUpdateTransactionMutation()
 
     const {
         register,

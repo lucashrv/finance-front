@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import ToggleButtonGroup from '@mui/joy/ToggleButtonGroup';
+import { useSnackbars } from './../../hooks/useSnackbars';
 
 export default function Overview() {
 
@@ -20,6 +21,8 @@ export default function Overview() {
         useGetAllTransactionsQuery,
         useGetConnectedUserQuery
     } = api
+
+    const { successSnackbar, errorSnackbar } = useSnackbars()
 
     const userName = JSON.parse(localStorage.getItem('user')).name
 
@@ -54,6 +57,17 @@ export default function Overview() {
         startDate: searchDate.startDate,
         endDate: searchDate.endDate
     })
+
+    const [deleteTransaction, { isLoading: loadingDelete }] = api.useDeleteTransactionMutation()
+
+    const onDelete = async (id) => {
+        try {
+            const destroy = await deleteTransaction(id).unwrap()
+            successSnackbar(destroy.message)
+        } catch (error) {
+            errorSnackbar(error.data.error)
+        }
+    }
 
     const userTransactionsFormated = !!userTransactions ?
         userTransactions.map(item => {
@@ -184,7 +198,8 @@ export default function Overview() {
                     rowContent={rowContent}
                     loading={transactionsLoading}
                     editRoute='/transactions/edit'
-                    onDelete={() => { }}
+                    onDelete={onDelete}
+                    loadingDelete={loadingDelete}
                 />
             </TableContainer>
 
