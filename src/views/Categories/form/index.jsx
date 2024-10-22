@@ -110,7 +110,7 @@ export default function CategoriesForm() {
                                 fontSize='11px'
                                 type='button'
                                 loading={loadingCreate || loadingUpdate}
-                                onClick={() => navigate(-1)}
+                                onClick={() => navigate("/categories")}
                             />
                             <Button
                                 label={`${id ? 'Editar' : 'Cadastrar'}`}

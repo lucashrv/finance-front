@@ -1,7 +1,13 @@
 export const transactionApi = (builder) => ({
     getAllTransactions: builder.query({
+        query: () => {
+            return `/transactions`
+        },
+        providesTags: ['Transactions'],
+    }),
+    getAllTransactionsDate: builder.query({
         query: ({ startDate, endDate }) => {
-            return `/transactions?startDate=${startDate}&endDate=${endDate}`
+            return `/transactions-date?startDate=${startDate}&endDate=${endDate}`
         },
         providesTags: ['Transactions'],
     }),

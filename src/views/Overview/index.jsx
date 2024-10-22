@@ -18,7 +18,7 @@ import { useSnackbars } from './../../hooks/useSnackbars';
 export default function Overview() {
 
     const {
-        useGetAllTransactionsQuery,
+        useGetAllTransactionsDateQuery,
         useGetConnectedUserQuery
     } = api
 
@@ -53,7 +53,7 @@ export default function Overview() {
 
     const { data: connectedUser, isLoading: userLoading } = useGetConnectedUserQuery()
 
-    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsQuery({
+    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsDateQuery({
         startDate: searchDate.startDate,
         endDate: searchDate.endDate
     })

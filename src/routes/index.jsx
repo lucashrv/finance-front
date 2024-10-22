@@ -84,7 +84,7 @@ function IndexRoutes() {
                     element={<PrivateRoute element={Transactions} />}
                 />
                 <Route
-                    path="/transactions/form"
+                    path="/transactions/new"
                     element={<PrivateRoute element={TransactionsForm} />}
                 />
                 <Route
@@ -96,7 +96,7 @@ function IndexRoutes() {
                     element={<PrivateRoute element={Categories} />}
                 />
                 <Route
-                    path="/categories/form"
+                    path="/categories/new"
                     element={<PrivateRoute element={CategoriesForm} />}
                 />
                 <Route

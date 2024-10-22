@@ -55,7 +55,7 @@ export default function Categories() {
                     padding='1rem'
                     fontSize='1.2rem'
                     color='success'
-                    onClick={() => navigate('/categories/form')}
+                    onClick={() => navigate('/categories/new')}
                 />
             </TitleContainer>
 

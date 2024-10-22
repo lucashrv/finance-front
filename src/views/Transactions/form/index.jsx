@@ -141,7 +141,7 @@ export default function TransactionsForm() {
                                 fontSize='11px'
                                 type='button'
                                 loading={loadingCreate || loadingUpdate}
-                                onClick={() => navigate(-1)}
+                                onClick={() => navigate("/transactions")}
                             />
                             <Button
                                 label={`${id ? 'Editar' : 'Cadastrar'}`}
