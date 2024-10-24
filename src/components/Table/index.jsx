@@ -10,7 +10,13 @@ import {
     SubTitle,
     LoadingContainer,
     TdActions,
-    PopoverButtonsContainer
+    PopoverButtonsContainer,
+    PaginationContainer,
+    PaginateFirst,
+    PaginatePrev,
+    PaginateNext,
+    PaginateLast,
+    ButtonPage
 } from './styled'
 import { CircularProgress } from '@mui/joy'
 import Box from '@mui/joy/Box';
@@ -23,6 +29,9 @@ import {
     Popper
 } from '@mui/material';
 import { useState } from 'react';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'; import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import LastPageIcon from '@mui/icons-material/LastPage';
 
 export default function Table(props) {
     const {
@@ -34,7 +43,9 @@ export default function Table(props) {
         loading = true,
         editRoute,
         onDelete,
-        loadingDelete = true
+        loadingDelete = true,
+        totalCount = 22,
+        rowsPerPage = 5,
     } = props
 
     const navigate = useNavigate()
@@ -44,6 +55,8 @@ export default function Table(props) {
 
     const open = Boolean(anchorEl);
     const idOpen = open ? 'simple-popper' : undefined;
+
+    const countPages = Math.ceil(totalCount / rowsPerPage)
 
     const toggleDelete = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -146,6 +159,29 @@ export default function Table(props) {
                     </tbody>
                 </>)}
             </TableContainer>
+
+            <PaginationContainer>
+                <PaginateFirst>
+                    <FirstPageIcon sx={{ fontSize: "3rem" }} />
+                </PaginateFirst>
+
+                <PaginatePrev>
+                    <NavigateBeforeIcon sx={{ fontSize: "3rem" }} />
+                </PaginatePrev>
+
+                {Array.from({ length: countPages }, (_, index) => (
+                    <ButtonPage key={index}>{index + 1}</ButtonPage>
+                ))}
+
+                <PaginateNext>
+                    <NavigateNextIcon sx={{ fontSize: "3rem" }} />
+                </PaginateNext>
+
+                <PaginateLast>
+                    <LastPageIcon sx={{ fontSize: "3rem" }} />
+                </PaginateLast>
+            </PaginationContainer>
+
             <Popper id={idOpen} open={open} anchorEl={anchorEl}>
                 <Box sx={{
                     border: 1,

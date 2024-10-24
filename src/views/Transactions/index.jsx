@@ -22,7 +22,6 @@ export default function Transactions() {
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
     const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsQuery()
-    console.log(userTransactions);
 
     const [deleteTransaction, { isLoading: loadingDelete }] = useDeleteTransactionMutation()
 

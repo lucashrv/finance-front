@@ -105,3 +105,36 @@ export const PopoverButtonsContainer = styled.div`
         background-color: #ff6b6b;
     }
 `
+
+export const PaginationContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+
+    &>div {
+        cursor: pointer;
+        border: 1px solid #afafaf;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+    }
+
+    &>div:hover {
+        background-color: #eeeeee;
+    }
+`
+
+export const PaginateFirst = styled.div``
+export const PaginatePrev = styled.div``
+export const PaginateNext = styled.div``
+export const PaginateLast = styled.div``
+
+export const ButtonPage = styled.div`
+    font-size: 2rem;
+    font-weight: 500;
+`
