@@ -14,15 +14,21 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import ToggleButtonGroup from '@mui/joy/ToggleButtonGroup';
 import { useSnackbars } from './../../hooks/useSnackbars';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Overview() {
 
     const {
         useGetAllTransactionsDateQuery,
+        useGetAllTransactionsQuery,
         useGetConnectedUserQuery
     } = api
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = parseInt(searchParams.get('page')) || 1
 
     const userName = JSON.parse(localStorage.getItem('user')).name
 
@@ -55,7 +61,14 @@ export default function Overview() {
 
     const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsDateQuery({
         startDate: searchDate.startDate,
-        endDate: searchDate.endDate
+        endDate: searchDate.endDate,
+        page,
+        limit: 10
+    })
+
+    const { data: allUserTransactions } = useGetAllTransactionsQuery({
+        page: 1,
+        limit: 1000
     })
 
     const [deleteTransaction, { isLoading: loadingDelete }] = api.useDeleteTransactionMutation()
@@ -70,7 +83,7 @@ export default function Overview() {
     }
 
     const userTransactionsFormated = !!userTransactions ?
-        userTransactions.map(item => {
+        userTransactions?.rows.map(item => {
 
             const options = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 
@@ -91,14 +104,14 @@ export default function Overview() {
         'transaction'
     ]
 
-    const income = !!userTransactions && userTransactions.reduce((acc, item) => {
+    const income = !!userTransactions && allUserTransactions?.rows.reduce((acc, item) => {
         if (item.type === 'INCOME') {
             return acc + item.transaction
         }
         return acc
     }, 0)
 
-    const expense = !!userTransactions && userTransactions.reduce((acc, item) => {
+    const expense = !!userTransactions && allUserTransactions?.rows.reduce((acc, item) => {
 
         if (item.type === 'EXPENSE') {
             return acc + item.transaction
@@ -196,6 +209,7 @@ export default function Overview() {
                     headers={tableHeader}
                     list={userTransactionsFormated}
                     rowContent={rowContent}
+                    count={userTransactions?.count}
                     loading={transactionsLoading}
                     editRoute='/transactions/edit'
                     onDelete={onDelete}

@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-size: 1.6rem;
+        min-width: 60rem;
         max-width: 192rem;
         background-color: #ECEFF2;
         font-family: "Inter", sans-serif;

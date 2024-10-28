@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 import Table from '../../components/Table';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbars } from './../../hooks/useSnackbars';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Transactions() {
 
@@ -17,11 +18,16 @@ export default function Transactions() {
         useDeleteTransactionMutation
     } = api
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = parseInt(searchParams.get('page')) || 1
+
     const navigate = useNavigate()
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsQuery()
+    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsQuery({ page, limit: 10 })
+    console.log(userTransactions);
 
     const [deleteTransaction, { isLoading: loadingDelete }] = useDeleteTransactionMutation()
 
@@ -43,7 +49,7 @@ export default function Transactions() {
     ]
 
     const userTransactionsFormated = !!userTransactions ?
-        userTransactions.map(item => {
+        userTransactions?.rows.map(item => {
 
             const options = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 
@@ -86,6 +92,7 @@ export default function Transactions() {
                     headers={tableHeader}
                     list={userTransactionsFormated}
                     rowContent={rowContent}
+                    count={userTransactions?.count}
                     loading={transactionsLoading}
                     editRoute='/transactions/edit'
                     onDelete={onDelete}

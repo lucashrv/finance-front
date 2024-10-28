@@ -1,13 +1,13 @@
 export const transactionApi = (builder) => ({
     getAllTransactions: builder.query({
-        query: () => {
-            return `/transactions`
+        query: ({ page, limit }) => {
+            return `/transactions?page=${page}&limit=${limit}`
         },
         providesTags: ['Transactions'],
     }),
     getAllTransactionsDate: builder.query({
-        query: ({ startDate, endDate }) => {
-            return `/transactions-date?startDate=${startDate}&endDate=${endDate}`
+        query: ({ startDate, endDate, page, limit }) => {
+            return `/transactions-date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`
         },
         providesTags: ['Transactions'],
     }),

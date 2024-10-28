@@ -11,12 +11,7 @@ import {
     LoadingContainer,
     TdActions,
     PopoverButtonsContainer,
-    PaginationContainer,
-    PaginateFirst,
-    PaginatePrev,
-    PaginateNext,
-    PaginateLast,
-    ButtonPage
+    PaginationContainer
 } from './styled'
 import { CircularProgress } from '@mui/joy'
 import Box from '@mui/joy/Box';
@@ -24,14 +19,12 @@ import Tooltip from '@mui/joy/Tooltip';
 import Button from '@mui/joy/Button';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
     Popper
 } from '@mui/material';
 import { useState } from 'react';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'; import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import LastPageIcon from '@mui/icons-material/LastPage';
+import Pagination from '@mui/material/Pagination';
 
 export default function Table(props) {
     const {
@@ -40,12 +33,12 @@ export default function Table(props) {
         headers,
         list = [],
         rowContent = [],
+        count = 0,
         loading = true,
         editRoute,
         onDelete,
         loadingDelete = true,
-        totalCount = 22,
-        rowsPerPage = 5,
+        rowsPerPage = 10,
     } = props
 
     const navigate = useNavigate()
@@ -56,7 +49,12 @@ export default function Table(props) {
     const open = Boolean(anchorEl);
     const idOpen = open ? 'simple-popper' : undefined;
 
-    const countPages = Math.ceil(totalCount / rowsPerPage)
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const initialPage = parseInt(searchParams.get('page')) || 1;
+
+    const totalPages = Math.ceil(count / rowsPerPage)
+    const [actualPage, setActualPage] = useState(initialPage);
 
     const toggleDelete = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -161,25 +159,17 @@ export default function Table(props) {
             </TableContainer>
 
             <PaginationContainer>
-                <PaginateFirst>
-                    <FirstPageIcon sx={{ fontSize: "3rem" }} />
-                </PaginateFirst>
-
-                <PaginatePrev>
-                    <NavigateBeforeIcon sx={{ fontSize: "3rem" }} />
-                </PaginatePrev>
-
-                {Array.from({ length: countPages }, (_, index) => (
-                    <ButtonPage key={index}>{index + 1}</ButtonPage>
-                ))}
-
-                <PaginateNext>
-                    <NavigateNextIcon sx={{ fontSize: "3rem" }} />
-                </PaginateNext>
-
-                <PaginateLast>
-                    <LastPageIcon sx={{ fontSize: "3rem" }} />
-                </PaginateLast>
+                <Pagination
+                    count={totalPages}
+                    page={actualPage}
+                    onChange={(e, value) => {
+                        setActualPage(value)
+                        setSearchParams({ page: value });
+                    }}
+                    size='large'
+                    showFirstButton
+                    showLastButton
+                />
             </PaginationContainer>
 
             <Popper id={idOpen} open={open} anchorEl={anchorEl}>
