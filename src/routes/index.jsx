@@ -16,6 +16,7 @@ import Transactions from '../views/Transactions'
 import TransactionsForm from '../views/Transactions/form'
 import Categories from '../views/Categories'
 import CategoriesForm from '../views/Categories/form'
+import Account from '../views/Account'
 
 
 function IndexRoutes() {
@@ -49,7 +50,7 @@ function IndexRoutes() {
         const isAuthenticated = authVerify()
 
         return isAuthenticated
-            ? <Navigate to="/overview" />
+            ? <Navigate to="/" />
             : <Component {...props} />
 
     }
@@ -76,7 +77,7 @@ function IndexRoutes() {
 
                 {/* Private Routes */}
                 <Route
-                    path="/overview"
+                    path="/"
                     element={<PrivateRoute element={Overview} />}
                 />
                 <Route
@@ -102,6 +103,10 @@ function IndexRoutes() {
                 <Route
                     path="/categories/edit/:id"
                     element={<PrivateRoute element={CategoriesForm} />}
+                />
+                <Route
+                    path="/account"
+                    element={<PrivateRoute element={Account} />}
                 />
 
             </Routes>

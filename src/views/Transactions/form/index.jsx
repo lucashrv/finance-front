@@ -63,7 +63,7 @@ export default function TransactionsForm() {
         }
     })
 
-    !categoryLoading && !id && setValue('category_id', getAllCategory[0].id)
+    !categoryLoading && !id && setValue('category_id', getAllCategory[0]?.id)
 
     const onSave = async (data) => {
         try {

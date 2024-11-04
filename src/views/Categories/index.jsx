@@ -7,20 +7,24 @@ import {
 } from './styled'
 import Button from '../../components/Button'
 import Table from '../../components/Table';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbars } from './../../hooks/useSnackbars';
 
 export default function Categories() {
 
     const {
-        useGetAllCategoriesQuery
+        useGetFindCountAllCategoriesQuery
     } = api
 
     const navigate = useNavigate()
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: categoriesData, isLoading: categoriesLoading } = useGetAllCategoriesQuery()
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = parseInt(searchParams.get('page')) || 1
+
+    const { data: categoriesData, isLoading: categoriesLoading } = useGetFindCountAllCategoriesQuery({ page, limit: 10 })
 
     const [deleteCategory, { isLoading: loadingDelete }] = api.useDeleteCategoryMutation()
 
@@ -64,7 +68,8 @@ export default function Categories() {
                     title='Suas Categorias'
                     subtitle={'Veja suas categorias cadastradas'}
                     headers={tableHeader}
-                    list={categoriesData}
+                    list={categoriesData?.rows}
+                    count={categoriesData?.count}
                     rowContent={rowContent}
                     loading={categoriesLoading}
                     editRoute='/categories/edit'

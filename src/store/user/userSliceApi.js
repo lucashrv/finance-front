@@ -18,12 +18,20 @@ export const userApi = (builder) => ({
         }),
         invalidatesTags: ['Users']
     }),
-    // updateUser: builder.mutation({
-    //     query: ({ id, body }) => ({
-    //         url: `/transaction/${id}`,
-    //         body,
-    //         method: 'PUT'
-    //     }),
-    //     invalidatesTags: ['Transactions', 'Users']
-    // }),
+    changeUserPassword: builder.mutation({
+        query: (body) => ({
+            url: `/user/change-password`,
+            body,
+            method: 'PATCH'
+        }),
+        invalidatesTags: ['Users']
+    }),
+    changeUserName: builder.mutation({
+        query: (body) => ({
+            url: `/user/change-name`,
+            body,
+            method: 'PATCH'
+        }),
+        invalidatesTags: ['Users']
+    }),
 })

@@ -45,7 +45,7 @@ export default function DrawerMenu() {
             >
                 <LogoContainer
                     onClick={() => {
-                        navigate('/overview')
+                        navigate('/')
                         toggleDrawer()
                     }}
                     style={{
@@ -69,7 +69,7 @@ export default function DrawerMenu() {
                     <ListItem>
                         <ListItemButton
                             onClick={() => {
-                                navigate('/overview')
+                                navigate('/')
                                 toggleDrawer()
                             }}
                         >
@@ -94,16 +94,6 @@ export default function DrawerMenu() {
                             }}
                         >
                             <p style={{ width: '100%', textAlign: 'center' }}>Categorias</p>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton
-                            onClick={() => {
-                                navigate('/overview')
-                                toggleDrawer()
-                            }}
-                        >
-                            <p style={{ width: '100%', textAlign: 'center' }}>Carteira</p>
                         </ListItemButton>
                     </ListItem>
                     <ListItem>

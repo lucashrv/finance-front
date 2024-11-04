@@ -60,7 +60,7 @@ export default function Navbar() {
         {
             id: 0,
             label: 'Visão geral',
-            link: '/overview',
+            link: '/',
         },
         {
             id: 1,
@@ -72,17 +72,12 @@ export default function Navbar() {
             label: 'Categorias',
             link: '/categories',
         },
-        {
-            id: 3,
-            label: 'Carteira',
-            link: '/overview',
-        },
     ]
 
     return (<>
         <NavbarContainer>
 
-            <LogoContainer onClick={() => navigate('/overview')}>
+            <LogoContainer onClick={() => navigate('/')}>
                 <AttachMoneyIcon
                     sx={{
                         fontSize: '3.7rem',
@@ -135,8 +130,11 @@ export default function Navbar() {
                             </Badge>
                         </MenuButton>
                         <JoyMenu sx={{ fontSize: '1.5rem' }}>
-                            <JoyMenuItem>Perfil</JoyMenuItem>
-                            <JoyMenuItem>Conta</JoyMenuItem>
+                            <JoyMenuItem
+                                onClick={() => navigate('/account')}
+                            >
+                                Conta
+                            </JoyMenuItem>
                         </JoyMenu>
                     </Dropdown>
                 </AvatarContainer>

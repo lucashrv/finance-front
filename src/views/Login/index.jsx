@@ -52,7 +52,7 @@ export default function LoginIndex() {
             localStorage.setItem('user', JSON.stringify({
                 name: token.auth.name,
             }))
-            navigate('/overview')
+            navigate('/')
         } catch (error) {
             errorSnackbar(error.data.error)
         }

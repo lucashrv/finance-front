@@ -89,7 +89,7 @@ export default function Table(props) {
                         {!list.length && (
                             <TableRow>
                                 <Td
-                                    colSpan={rowContent.length}
+                                    colSpan={+rowContent.length + 1}
                                     style={{
                                         textAlign: 'center',
                                         fontSize: '1.5rem',

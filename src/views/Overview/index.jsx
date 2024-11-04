@@ -20,7 +20,6 @@ export default function Overview() {
 
     const {
         useGetAllTransactionsDateQuery,
-        useGetAllTransactionsQuery,
         useGetConnectedUserQuery
     } = api
 
@@ -66,7 +65,9 @@ export default function Overview() {
         limit: 10
     })
 
-    const { data: allUserTransactions } = useGetAllTransactionsQuery({
+    const { data: allUserTransactions } = useGetAllTransactionsDateQuery({
+        startDate: searchDate.startDate,
+        endDate: searchDate.endDate,
         page: 1,
         limit: 1000
     })
@@ -104,14 +105,15 @@ export default function Overview() {
         'transaction'
     ]
 
-    const income = !!userTransactions && allUserTransactions?.rows.reduce((acc, item) => {
+    const income = !!userTransactions && allUserTransactions?.rows?.reduce((acc, item) => {
         if (item.type === 'INCOME') {
             return acc + item.transaction
         }
         return acc
     }, 0)
 
-    const expense = !!userTransactions && allUserTransactions?.rows.reduce((acc, item) => {
+
+    const expense = !!userTransactions && allUserTransactions?.rows?.reduce((acc, item) => {
 
         if (item.type === 'EXPENSE') {
             return acc + item.transaction
@@ -190,13 +192,13 @@ export default function Overview() {
                 />
                 <WalletBalance
                     title='Rendimentos'
-                    value={income.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
+                    value={income?.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
                     color="green"
                     loading={transactionsLoading}
                 />
                 <WalletBalance
                     title='Despesas'
-                    value={expense.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
+                    value={expense?.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
                     color="#e40000"
                     loading={transactionsLoading}
                 />

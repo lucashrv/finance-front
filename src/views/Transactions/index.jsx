@@ -7,14 +7,13 @@ import {
 } from './styled'
 import Button from '../../components/Button'
 import Table from '../../components/Table';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbars } from './../../hooks/useSnackbars';
-import { useSearchParams } from 'react-router-dom';
 
 export default function Transactions() {
 
     const {
-        useGetAllTransactionsQuery,
+        useGetFindCountAllTransactionsQuery,
         useDeleteTransactionMutation
     } = api
 
@@ -26,8 +25,7 @@ export default function Transactions() {
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: userTransactions, isLoading: transactionsLoading } = useGetAllTransactionsQuery({ page, limit: 10 })
-    console.log(userTransactions);
+    const { data: userTransactions, isLoading: transactionsLoading } = useGetFindCountAllTransactionsQuery({ page, limit: 10 })
 
     const [deleteTransaction, { isLoading: loadingDelete }] = useDeleteTransactionMutation()
 
@@ -49,7 +47,7 @@ export default function Transactions() {
     ]
 
     const userTransactionsFormated = !!userTransactions ?
-        userTransactions?.rows.map(item => {
+        userTransactions?.rows?.map(item => {
 
             const options = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
 
@@ -66,7 +64,7 @@ export default function Transactions() {
     const rowContent = [
         'description',
         'category_name',
-        'date',
+        'created_at',
         'transaction'
     ]
 
@@ -90,8 +88,8 @@ export default function Transactions() {
                     title='Suas Transações'
                     subtitle={'Veja suas transações cadastradas'}
                     headers={tableHeader}
-                    list={userTransactionsFormated}
                     rowContent={rowContent}
+                    list={userTransactions?.rows}
                     count={userTransactions?.count}
                     loading={transactionsLoading}
                     editRoute='/transactions/edit'

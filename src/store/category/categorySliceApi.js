@@ -11,6 +11,24 @@ export const categoryApi = (builder) => ({
             return res
         },
     }),
+    getFindCountAllCategories: builder.query({
+        query: ({ page, limit }) => {
+            return `/categories-paginate?page=${page}&limit=${limit}`
+        },
+        providesTags: ['Categories'],
+        transformResponse: (response, meta, arg) => {
+
+            const rows = response?.rows.map(item => ({
+                ...item,
+                created_at: new Date(item.created_at).toLocaleDateString('pt-br')
+            }))
+
+            return {
+                ...response,
+                rows
+            }
+        },
+    }),
     getOneCategory: builder.query({
         query: ({ id }) =>
             `/category/${id}`,
