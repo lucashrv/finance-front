@@ -1,0 +1,9 @@
+.button-icon {
+    color: #747474;
+}
+
+@media screen and  (max-width: 701px) {
+    .paper-search {
+        display: none;
+    }
+}

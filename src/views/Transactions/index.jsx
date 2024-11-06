@@ -76,7 +76,6 @@ export default function Transactions() {
 
                 <Button
                     label='Criar transação'
-                    padding='1rem'
                     fontSize='1.2rem'
                     color='success'
                     onClick={() => navigate('/transactions/new')}

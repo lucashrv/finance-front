@@ -23,8 +23,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
     Popper
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 export default function Table(props) {
     const {
@@ -51,14 +53,54 @@ export default function Table(props) {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
+    const newParams = new URLSearchParams(searchParams);
+
+    const page = searchParams.get("page") || 1
+    const search = searchParams.get("search")
+    const orderParams = searchParams.get("order")
+    const orderTypeParams = searchParams.get("orderType")
+
+    const [order, setOrder] = useState({
+        field: orderParams || "name",
+        orderType: orderTypeParams || "ASC"
+    });
+
     const initialPage = parseInt(searchParams.get('page')) || 1;
 
     const totalPages = Math.ceil(count / rowsPerPage)
     const [actualPage, setActualPage] = useState(initialPage);
 
+    useEffect(() => {
+        setActualPage(1)
+
+        !!search && newParams.set("search", search);
+        newParams.set("page", 1);
+        newParams.set("order", order.field);
+        newParams.set("orderType", order.orderType);
+
+        setSearchParams(newParams);
+    }, [order])
+
     const toggleDelete = (event) => {
         setAnchorEl(anchorEl ? null : event.currentTarget)
     }
+
+    const handleSort = (field) => {
+        setOrder((prev) => {
+            if (prev.field === field) {
+                return { field, orderType: prev.orderType === 'ASC' ? 'DESC' : 'ASC' };
+            }
+
+            return { field, orderType: 'ASC' };
+        });
+    };
+
+    const renderOrderIcon = (field) => {
+        if (order.field === field) {
+            return order.orderType === 'ASC' ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />
+        }
+        return '';
+    };
 
     return (
         <Container>
@@ -78,7 +120,14 @@ export default function Table(props) {
                 <TableHead>
                     <TableRow>
                         {headers.map((header, i) => (
-                            <Th key={i}>{header}</Th>
+                            <Th
+                                key={i}
+                                onClick={() => handleSort(rowContent[i])}
+                            >
+                                {header}
+                                {renderOrderIcon(rowContent[i])}
+
+                            </Th>
                         ))}
                         <Th></Th>
                     </TableRow>
@@ -118,7 +167,7 @@ export default function Table(props) {
                                     )
                                 })}
                                 <TdActions>
-                                    <Box sx={{ display: 'flex', gap: 4, width: '100%', justifyContent: 'center' }}>
+                                    <Box sx={{ width: "6.2rem" }}>
                                         <Tooltip title="Editar" variant="plain">
                                             <Button variant="plain" size='small'>
                                                 <EditOutlinedIcon
@@ -164,7 +213,11 @@ export default function Table(props) {
                     page={actualPage}
                     onChange={(e, value) => {
                         setActualPage(value)
-                        setSearchParams({ page: value });
+
+                        newParams.set("page", value);
+                        !!search && newParams.set("search", search);
+
+                        setSearchParams(newParams);
                     }}
                     size='large'
                     showFirstButton

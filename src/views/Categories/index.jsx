@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 import Table from '../../components/Table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbars } from './../../hooks/useSnackbars';
+import InputSearch from '../../components/InputSearch';
 
 export default function Categories() {
 
@@ -24,7 +25,13 @@ export default function Categories() {
 
     const page = parseInt(searchParams.get('page')) || 1
 
-    const { data: categoriesData, isLoading: categoriesLoading } = useGetFindCountAllCategoriesQuery({ page, limit: 10 })
+    const search = searchParams.get('search') || ''
+
+    const order = searchParams.get('order') || 'name'
+
+    const orderType = searchParams.get('orderType') || 'ASC'
+
+    const { data: categoriesData, isLoading: categoriesLoading } = useGetFindCountAllCategoriesQuery({ page, limit: 10, search, order, orderType })
 
     const [deleteCategory, { isLoading: loadingDelete }] = api.useDeleteCategoryMutation()
 
@@ -56,12 +63,15 @@ export default function Categories() {
 
                 <Button
                     label='Criar categoria'
-                    padding='1rem'
                     fontSize='1.2rem'
                     color='success'
                     onClick={() => navigate('/categories/new')}
                 />
             </TitleContainer>
+
+            <InputSearch
+                placeholder="Pesquisar categorias"
+            />
 
             <TableContainer>
                 <Table

@@ -9,7 +9,7 @@ export default function Button(props) {
         variant = 'contained',
         fontSize = '16px',
         padding = '5px',
-        borderRadius = '15px',
+        borderRadius = '20px',
         onClick,
         onSubmit,
         loading

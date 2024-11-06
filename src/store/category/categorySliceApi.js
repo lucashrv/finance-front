@@ -12,8 +12,8 @@ export const categoryApi = (builder) => ({
         },
     }),
     getFindCountAllCategories: builder.query({
-        query: ({ page, limit }) => {
-            return `/categories-paginate?page=${page}&limit=${limit}`
+        query: ({ page, limit, search, order, orderType }) => {
+            return `/categories-paginate?page=${page}&limit=${limit}&search=${search}&order=${order}&orderType=${orderType}`
         },
         providesTags: ['Categories'],
         transformResponse: (response, meta, arg) => {

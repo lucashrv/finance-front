@@ -66,7 +66,7 @@ export const Td = styled.td`
 export const TdActions = styled.td`
     border-top: 1px solid #85858560;
     border-bottom: 1px solid #85858560;
-    width: 3rem;
+    width: 6.3rem;
 `
 
 export const LoadingContainer = styled.div`
