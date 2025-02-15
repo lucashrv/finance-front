@@ -25,9 +25,7 @@ export default function InputSearch(props) {
 
         const newParams = new URLSearchParams(searchParams);
 
-        const page = searchParams.get("page")
-
-        !!page && newParams.set("page", page);
+        newParams.set("page", 1);
         newParams.set("search", search);
 
         setSearchParams(newParams);

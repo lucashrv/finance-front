@@ -41,6 +41,8 @@ export default function Table(props) {
         onDelete,
         loadingDelete = true,
         rowsPerPage = 10,
+        initialOrder,
+        initialOrderType
     } = props
 
     const navigate = useNavigate()
@@ -55,14 +57,13 @@ export default function Table(props) {
 
     const newParams = new URLSearchParams(searchParams);
 
-    const page = searchParams.get("page") || 1
     const search = searchParams.get("search")
     const orderParams = searchParams.get("order")
     const orderTypeParams = searchParams.get("orderType")
 
     const [order, setOrder] = useState({
-        field: orderParams || "name",
-        orderType: orderTypeParams || "ASC"
+        field: orderParams || initialOrder,
+        orderType: orderTypeParams || initialOrderType
     });
 
     const initialPage = parseInt(searchParams.get('page')) || 1;

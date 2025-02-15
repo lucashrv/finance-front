@@ -14,7 +14,8 @@ import InputSearch from '../../components/InputSearch';
 export default function Categories() {
 
     const {
-        useGetFindCountAllCategoriesQuery
+        useGetFindCountAllCategoriesQuery,
+        useDeleteCategoryMutation
     } = api
 
     const navigate = useNavigate()
@@ -33,7 +34,7 @@ export default function Categories() {
 
     const { data: categoriesData, isLoading: categoriesLoading } = useGetFindCountAllCategoriesQuery({ page, limit: 10, search, order, orderType })
 
-    const [deleteCategory, { isLoading: loadingDelete }] = api.useDeleteCategoryMutation()
+    const [deleteCategory, { isLoading: loadingDelete }] = useDeleteCategoryMutation()
 
     const onDelete = async (id) => {
         try {
@@ -78,13 +79,15 @@ export default function Categories() {
                     title='Suas Categorias'
                     subtitle={'Veja suas categorias cadastradas'}
                     headers={tableHeader}
-                    list={categoriesData?.rows}
-                    count={categoriesData?.count}
                     rowContent={rowContent}
+                    list={categoriesData?.rows}
                     loading={categoriesLoading}
+                    count={categoriesData?.count}
                     editRoute='/categories/edit'
                     onDelete={onDelete}
                     loadingDelete={loadingDelete}
+                    initialOrder='name'
+                    initialOrderType='ASC'
                 />
             </TableContainer>
 

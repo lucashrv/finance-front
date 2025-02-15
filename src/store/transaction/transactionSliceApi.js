@@ -6,8 +6,8 @@ export const transactionApi = (builder) => ({
         providesTags: ['Transactions'],
     }),
     getFindCountAllTransactions: builder.query({
-        query: ({ page, limit }) => {
-            return `/transactions-paginate?page=${page}&limit=${limit}`
+        query: ({ page, limit, search, order, orderType }) => {
+            return `/transactions-paginate?page=${page}&limit=${limit}&search=${search}&order=${order}&orderType=${orderType}`
         },
         providesTags: ['Transactions'],
         transformResponse: (response, meta, arg) => {
@@ -27,8 +27,8 @@ export const transactionApi = (builder) => ({
         },
     }),
     getAllTransactionsDate: builder.query({
-        query: ({ startDate, endDate, page, limit }) => {
-            return `/transactions-date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`
+        query: ({ startDate, endDate, page, limit, order, orderType }) => {
+            return `/transactions-date?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}&order=${order}&orderType=${orderType}`
         },
         providesTags: ['Transactions'],
     }),

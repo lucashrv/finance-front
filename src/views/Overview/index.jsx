@@ -20,7 +20,8 @@ export default function Overview() {
 
     const {
         useGetAllTransactionsDateQuery,
-        useGetConnectedUserQuery
+        useGetConnectedUserQuery,
+        useDeleteTransactionMutation
     } = api
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
@@ -28,6 +29,10 @@ export default function Overview() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const page = parseInt(searchParams.get('page')) || 1
+
+    const order = searchParams.get('order') || 'created_at'
+
+    const orderType = searchParams.get('orderType') || 'DESC'
 
     const userName = JSON.parse(localStorage.getItem('user')).name
 
@@ -62,17 +67,21 @@ export default function Overview() {
         startDate: searchDate.startDate,
         endDate: searchDate.endDate,
         page,
-        limit: 10
+        limit: 10,
+        order,
+        orderType
     })
 
     const { data: allUserTransactions } = useGetAllTransactionsDateQuery({
         startDate: searchDate.startDate,
         endDate: searchDate.endDate,
         page: 1,
-        limit: 1000
+        limit: 1000,
+        order: "transaction",
+        orderType: "ASC"
     })
 
-    const [deleteTransaction, { isLoading: loadingDelete }] = api.useDeleteTransactionMutation()
+    const [deleteTransaction, { isLoading: loadingDelete }] = useDeleteTransactionMutation()
 
     const onDelete = async (id) => {
         try {
@@ -209,13 +218,15 @@ export default function Overview() {
                     title={'Últimas transações'}
                     subtitle={'Veja suas últimas transações realizadas'}
                     headers={tableHeader}
-                    list={userTransactionsFormated}
                     rowContent={rowContent}
-                    count={userTransactions?.count}
+                    list={userTransactionsFormated}
                     loading={transactionsLoading}
+                    count={userTransactions?.count}
                     editRoute='/transactions/edit'
                     onDelete={onDelete}
                     loadingDelete={loadingDelete}
+                    initialOrder='created_at'
+                    initialOrderType='DESC'
                 />
             </TableContainer>
 

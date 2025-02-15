@@ -9,6 +9,7 @@ import Button from '../../components/Button'
 import Table from '../../components/Table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSnackbars } from './../../hooks/useSnackbars';
+import InputSearch from '../../components/InputSearch';
 
 export default function Transactions() {
 
@@ -17,15 +18,21 @@ export default function Transactions() {
         useDeleteTransactionMutation
     } = api
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const page = parseInt(searchParams.get('page')) || 1
-
     const navigate = useNavigate()
 
     const { successSnackbar, errorSnackbar } = useSnackbars()
 
-    const { data: userTransactions, isLoading: transactionsLoading } = useGetFindCountAllTransactionsQuery({ page, limit: 10 })
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = parseInt(searchParams.get('page')) || 1
+
+    const search = searchParams.get('search') || ''
+
+    const order = searchParams.get('order') || 'created_at'
+
+    const orderType = searchParams.get('orderType') || 'DESC'
+
+    const { data: userTransactions, isLoading: transactionsLoading } = useGetFindCountAllTransactionsQuery({ page, limit: 10, search, order, orderType })
 
     const [deleteTransaction, { isLoading: loadingDelete }] = useDeleteTransactionMutation()
 
@@ -46,24 +53,9 @@ export default function Transactions() {
         'Valor',
     ]
 
-    const userTransactionsFormated = !!userTransactions ?
-        userTransactions?.rows?.map(item => {
-
-            const options = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' }
-
-            const date = new Date(item.created_at).toLocaleDateString('pt-br')
-
-            return {
-                ...item,
-                transaction: item.transaction.toLocaleString('pt-BR', options),
-                category_name: item['category.name'],
-                date
-            }
-        }) : []
-
     const rowContent = [
         'description',
-        'category_name',
+        'category.name',
         'created_at',
         'transaction'
     ]
@@ -82,6 +74,10 @@ export default function Transactions() {
                 />
             </TitleContainer>
 
+            <InputSearch
+                placeholder="Pesquisar transações"
+            />
+
             <TableContainer>
                 <Table
                     title='Suas Transações'
@@ -89,11 +85,13 @@ export default function Transactions() {
                     headers={tableHeader}
                     rowContent={rowContent}
                     list={userTransactions?.rows}
-                    count={userTransactions?.count}
                     loading={transactionsLoading}
+                    count={userTransactions?.count}
                     editRoute='/transactions/edit'
                     onDelete={onDelete}
                     loadingDelete={loadingDelete}
+                    initialOrder='created_at'
+                    initialOrderType='DESC'
                 />
             </TableContainer>
 
